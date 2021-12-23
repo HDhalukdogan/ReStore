@@ -14,6 +14,7 @@ import NotFound from "../errors/NotFound"
 import { Switch } from "react-router-dom";
 import BasketPage from "../../features/basket/BasketPage";
 import CheckoutPage from "../../features/checkout/CheckoutPage";
+import Orders from "../../features/orders/Orders";
 import LoadingComponent from "./LoadingComponent";
 import { useAppDispatch } from "../store/configureStore";
 import { fetchBasketAsync } from "../../features/basket/basketSlice";
@@ -69,6 +70,7 @@ function App() {
           <Route path='/server-error' component={ServerError} />
           <Route path='/basket' component={BasketPage} />
           <PrivateRoute path='/checkout' component={CheckoutPage} />
+          <PrivateRoute path='/orders' component={Orders} />
           <Route path='/login' component={Login} />
           <Route path='/register' component={Register} />
           <Route component={NotFound} />
