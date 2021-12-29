@@ -1,4 +1,4 @@
-import { Grid, Button } from '@mui/material';
+import { Grid } from '@mui/material';
 import Typography from '@mui/material/Typography';
 import { useAppSelector } from '../../app/store/configureStore';
 import BasketSummary from '../basket/BasketSummary';
