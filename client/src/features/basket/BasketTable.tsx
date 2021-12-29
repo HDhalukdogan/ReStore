@@ -5,6 +5,7 @@ import { useAppDispatch, useAppSelector } from "../../app/store/configureStore";
 import { BasketItem } from "../../app/models/basket";
 import { currencyFormat } from "../../app/util/util";
 import { addBasketItemAsync, removeBasketItemAsync } from "./basketSlice";
+import { Link } from "react-router-dom";
 
 interface Props {
     items: BasketItem[];
@@ -37,7 +38,9 @@ export default function BasketTable({items, isBasket=true}:Props) {
               >
                 <TableCell component="th" scope="row">
                   <Box display='flex' alignItems='center'>
+                    <Link to={`/catalog/${item.productId}`}>
                     <img src={item.pictureUrl} alt={item.name} style={{ height: 50, marginRight: 20 }} />
+                    </Link>
                     <span>{item.name}</span>
                   </Box>
                 </TableCell>
