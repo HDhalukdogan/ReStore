@@ -34,7 +34,8 @@ builder.Services.AddSwaggerGen(c =>
 });
 builder.Services.AddDbContext<StoreContext>(opt =>
 {
-    opt.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection"));
+    //opt.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection"));
+    opt.UseNpgsql(builder.Configuration.GetConnectionString("PostgresConnection"));
 });
 builder.Services.AddCors();
 builder.Services.AddIdentityCore<User>(opt =>
