@@ -1,35 +1,33 @@
 var builder = WebApplication.CreateBuilder(args);
 
-//Add services to the containerbuilder.S
+//Add services to the container
 builder.Services.AddControllers();
 builder.Services.AddAutoMapper(typeof(MappingProfiles).Assembly);
+builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(c =>
 {
-    c.SwaggerDoc("v1", new OpenApiInfo { Title = "API", Version = "v1" });
-    c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+    var jwtSecurityScheme = new OpenApiSecurityScheme
     {
-        Description = "Jwt auth header",
+        BearerFormat = "JWT",
         Name = "Authorization",
         In = ParameterLocation.Header,
         Type = SecuritySchemeType.ApiKey,
-        Scheme = "Bearer"
-    });
+        Scheme = JwtBearerDefaults.AuthenticationScheme,
+        Description = "Put Bearer + your token in the box below",
+        Reference = new OpenApiReference
+        {
+            Id = JwtBearerDefaults.AuthenticationScheme,
+            Type = ReferenceType.SecurityScheme
+        }
+    };
+
+    c.AddSecurityDefinition(jwtSecurityScheme.Reference.Id, jwtSecurityScheme);
+
     c.AddSecurityRequirement(new OpenApiSecurityRequirement
     {
-                    {
-                        new OpenApiSecurityScheme
-                        {
-                            Reference = new OpenApiReference
-                            {
-                                Type = ReferenceType.SecurityScheme,
-                                Id = "Bearer"
-                            },
-                            Scheme = "oauth2",
-                            Name = "Bearer",
-                            In = ParameterLocation.Header
-                        },
-                        new List<string>()
-                    }
+        {
+            jwtSecurityScheme, Array.Empty<string>()
+        }
     });
 });
 builder.Services.AddDbContext<StoreContext>(opt =>
@@ -67,7 +65,10 @@ app.UseMiddleware<ExceptionMiddleware>();
 if (builder.Environment.IsDevelopment())
 {
     app.UseSwagger();
-    app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "API v1"));
+    app.UseSwaggerUI(c =>
+    {
+        c.ConfigObject.AdditionalItems.Add("persistAuthorization", "true");
+    });
 }
 
 app.UseDefaultFiles();
@@ -98,36 +99,3 @@ catch (Exception ex)
 }
 
 await app.RunAsync();
-
-// namespace API
-// {
-//     public class Program
-//     {
-//         public static async Task Main(string[] args)
-//         {
-//             var host = CreateHostBuilder(args).Build();
-//             using var scope = host.Services.CreateScope();
-//             var context = scope.ServiceProvider.GetRequiredService<StoreContext>();
-//             var userManager = scope.ServiceProvider.GetRequiredService<UserManager<User>>();
-//             var logger = scope.ServiceProvider.GetRequiredService<ILogger<Program>>();
-//             try
-//             {
-//                 await context.Database.MigrateAsync();
-//                 await DbInitializer.Initialize(context, userManager);
-//             }
-//             catch (Exception ex)
-//             {
-//                 logger.LogError(ex, "Problem migrating data");
-//             }
-
-//             await host.RunAsync();
-//         }
-
-//         public static IHostBuilder CreateHostBuilder(string[] args) =>
-//             Host.CreateDefaultBuilder(args)
-//                 .ConfigureWebHostDefaults(webBuilder =>
-//                 {
-//                     webBuilder.UseStartup<Startup>();
-//                 });
-//     }
-// }
