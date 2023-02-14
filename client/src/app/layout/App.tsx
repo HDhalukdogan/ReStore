@@ -26,6 +26,7 @@ function App() {
 
   useEffect(() => {
     initApp().then(() => setLoading(false));
+    setDarkMode(localStorage.getItem("darkMode")==='true')
   }, [initApp])
 
   const [darkMode, setDarkMode] = useState(false)
@@ -39,6 +40,7 @@ function App() {
     }
   })
   function handleThemeChange() {
+    localStorage.setItem("darkMode",JSON.stringify(!darkMode))
     setDarkMode(!darkMode);
   }
 
