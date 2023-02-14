@@ -1,5 +1,5 @@
 import { Box, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from "@mui/material";
-import { LoadingButton } from "@material-ui/lab";
+import { LoadingButton } from "@mui/lab";
 import { Add, Delete, Remove } from "@mui/icons-material";
 import { useAppDispatch, useAppSelector } from "../../app/store/configureStore";
 import { BasketItem } from "../../app/models/basket";

@@ -9,7 +9,7 @@ import { validationSchema } from './checkoutValidation';
 import agent from "../../app/api/agent";
 import { useAppDispatch } from "../../app/store/configureStore";
 import { clearBasket } from "../basket/basketSlice";
-import { LoadingButton } from "@material-ui/lab";
+import { LoadingButton } from "@mui/lab";
 const steps = ['Shipping address', 'Review your order', 'Payment details'];
 
 function getStepContent(step: number) {

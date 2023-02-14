@@ -1,29 +1,17 @@
-import Catalog from "../../features/catalog/Catalog"
 import Header from "./Header"
 import { Container, createTheme, CssBaseline, ThemeProvider } from "@mui/material";
 import { useCallback, useEffect, useState } from "react";
-import { Route } from "react-router";
-import HomePage from "../../features/home/HomePage"
-import ProductDetails from "../../features/catalog/ProductDetails"
-import AboutPage from "../../features/about/AboutPage"
-import ContactPage from "../../features/contact/ContactPage"
 import { ToastContainer } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
-import ServerError from "../errors/ServerError"
-import NotFound from "../errors/NotFound"
-import { Switch } from "react-router-dom";
-import BasketPage from "../../features/basket/BasketPage";
-import CheckoutPage from "../../features/checkout/CheckoutPage";
-import Orders from "../../features/orders/Orders";
-import Inventory from "../../features/admin/Inventory";
+import { Outlet, useLocation } from "react-router-dom";
 import LoadingComponent from "./LoadingComponent";
 import { useAppDispatch } from "../store/configureStore";
 import { fetchBasketAsync } from "../../features/basket/basketSlice";
-import Login from "../../features/account/Login";
-import Register from "../../features/account/Register";
 import { fetchCurrentUser } from "../../features/account/accountSlice";
-import PrivateRoute from "./PrivateRoute";
+import HomePage from "../../features/home/HomePage";
 function App() {
+  const location = useLocation();
+
   const dispatch = useAppDispatch();
   const [loading, setLoading] = useState(true);
 
@@ -61,25 +49,12 @@ function App() {
       <ToastContainer position='bottom-right' hideProgressBar theme='colored' />
       <CssBaseline />
       <Header darkMode={darkMode} handleThemeChange={handleThemeChange} />
-      <Route exact path='/' component={HomePage} />
-      <Route path={'/(.+)'} render={() => (
-        <Container>
-          <Switch>
-            <Route exact path='/catalog' component={Catalog} />
-            <Route path='/catalog/:id' component={ProductDetails} />
-            <Route path='/about' component={AboutPage} />
-            <Route path='/contact' component={ContactPage} />
-            <Route path='/server-error' component={ServerError} />
-            <Route path='/basket' component={BasketPage} />
-            <PrivateRoute path='/checkout' component={CheckoutPage} />
-            <PrivateRoute path='/orders' component={Orders} />
-            <PrivateRoute roles={['Admin']} path='/inventory' component={Inventory} />
-            <Route path='/login' component={Login} />
-            <Route path='/register' component={Register} />
-            <Route component={NotFound} />
-          </Switch>
-        </Container>
-      )} />
+      {loading ? <LoadingComponent message='Initialising app...' />
+        : location.pathname === '/' ? <HomePage />
+          : <Container sx={{ mt: 4 }}>
+            <Outlet />
+          </Container>
+      }
     </ThemeProvider>
   );
 }

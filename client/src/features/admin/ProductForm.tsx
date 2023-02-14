@@ -11,7 +11,7 @@ import {validationSchema} from './productValidation';
 import agent from "../../app/api/agent";
 import { useAppDispatch } from "../../app/store/configureStore";
 import { setProduct } from "../catalog/catalogSlice";
-import { LoadingButton } from "@material-ui/lab";
+import { LoadingButton } from "@mui/lab";
 
 interface Props {
     product?: Product;

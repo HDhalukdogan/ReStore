@@ -6,16 +6,16 @@ import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { Paper } from '@mui/material';
-import { Link, useHistory } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
-import { LoadingButton } from '@material-ui/lab';
+import { LoadingButton } from '@mui/lab';
 import agent from '../../app/api/agent';
 import { toast } from 'react-toastify';
 
 
 
 export default function Register() {
-  const history = useHistory();
+  const navigate = useNavigate();
   const { register, handleSubmit, setError, formState: { isSubmitting, errors, isValid } } = useForm({
     mode: 'all'
   });
@@ -43,11 +43,11 @@ export default function Register() {
         Register
       </Typography>
       <Box component="form"
-        onSubmit={handleSubmit((data) =>
+        onSubmit={handleSubmit((data: any) =>
           agent.Account.register(data)
             .then(() => {
               toast.success('Registration successful - you can now login');
-              history.push('login');
+              navigate('login');
             })
             .catch(error => handleApiErrors(error)))
         }
@@ -60,7 +60,7 @@ export default function Register() {
           autoFocus
           {...register('username', { required: 'Username is required' })}
           error={!!errors.username}
-          helperText={errors?.username?.message}
+          helperText={errors?.username?.message as string}
         />
         <TextField
           margin="normal"
@@ -74,7 +74,7 @@ export default function Register() {
             }
           })}
           error={!!errors.email}
-          helperText={errors?.email?.message}
+          helperText={errors?.email?.message as string}
         />
         <TextField
           margin="normal"
@@ -89,7 +89,7 @@ export default function Register() {
             }
           })}
           error={!!errors.password}
-          helperText={errors?.password?.message}
+          helperText={errors?.password?.message as string}
         />
         <LoadingButton
           loading={isSubmitting}

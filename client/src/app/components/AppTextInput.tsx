@@ -1,4 +1,4 @@
-import { TextField } from "@material-ui/core";
+import { TextField } from "@mui/material";
 import { useController, UseControllerProps } from "react-hook-form";
 
 interface Props extends UseControllerProps {
